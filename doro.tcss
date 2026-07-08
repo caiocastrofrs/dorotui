@@ -1,0 +1,37 @@
+TimeDisplay {
+  color: $foreground-muted;
+  text-style: bold;
+  width: 19;
+}
+
+
+#start {
+  background: $primary; 
+}
+
+#stop {
+  display: none;
+  background: $secondary; 
+}
+
+.started {
+  color: $text;
+  background: $secondary-muted;
+}
+
+.started TimeDisplay {
+  color: $foreground;
+}
+
+.started #start {
+  display: none;
+}
+
+.started #stop {
+  display: block;
+  background: $primary;
+}
+
+.started #reset {
+  display: none;
+}
