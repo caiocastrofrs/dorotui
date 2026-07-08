@@ -1,0 +1,78 @@
+Screen {
+  box-sizing: border-box;
+  content-align: center middle;
+}
+
+TimeDisplay {
+  color: $foreground-muted;
+  text-style: bold;
+  width: 19;
+}
+
+#start {
+  background: $primary; 
+}
+
+#stop {
+  display: none;
+  background: $secondary; 
+}
+
+.started {
+  color: $text;
+  background: $secondary-muted;
+}
+
+.started TimeDisplay {
+  color: $foreground;
+}
+
+.started #start {
+  display: none;
+}
+
+.started #stop {
+  display: block;
+  background: $primary;
+}
+
+.started #reset {
+  display: none;
+}
+
+TimerConfig {
+  margin: 5;
+  width: 100;
+}
+
+TimerConfig Label {
+  color: $primary;
+  border: transparent;
+}
+
+TimerConfig Input:focus {
+  border: tall $secondary; 
+}
+
+TimerConfig HorizontalGroup {
+  margin-top: 1;
+  margin-right: 1;
+  align: right middle;
+}
+
+TimerConfig HorizontalGroup #save {
+  background: $primary;
+  margin-right: 1;
+}
+
+TimerConfig HorizontalGroup #default {
+  background: $secondary;
+}
+
+.disabled {
+  display: none;
+}
+
+.enabled {
+  display: block;
+}
