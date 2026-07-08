@@ -7,11 +7,10 @@ from textual.widgets import Button, Digits
 
 
 class TimeDisplay(Digits):
-    default_time = 3600.00 * 25.00 # 25 minutes 
-
-    time = reactive(200)  # noqa: F821
+    time = reactive(0)
 
     def on_mount(self) -> None:
+        self.time = self.app.default_time
         self.update_timer = self.set_interval(1/60, self.update_time, pause=True)
 
     def update_time(self) -> None:
@@ -20,14 +19,18 @@ class TimeDisplay(Digits):
         else:
             self.stop()
             self.reset()
-            self.query_ancestor(DoroTimer).remove_class("started")
             subprocess.run(["paplay","--volume=30000","sounds/alarm-clock-elapsed.oga"])
+            if self.time == self.app.default_time:
+                self.time = self.app.default_rest
+            elif self.time == self.app.default_rest:
+                self.time = self.app.default_time
+            self.query_ancestor(DoroTimer).remove_class("started")
+
 
 
     def watch_time(self, time: float) -> None:
         seconds, _ = divmod(time, 60)
         minutes, seconds = divmod(seconds, 60)
-
         self.update(f"{minutes:02,.0f}:{seconds:02.0f}")
 
     def start(self) -> None:
@@ -37,7 +40,7 @@ class TimeDisplay(Digits):
         self.update_timer.pause()
 
     def reset(self) -> None:
-        self.time = self.default_time
+        self.time = self.app.default_time
 
 class DoroTimer(CenterMiddle):
     def on_button_pressed(self, event: Button.Pressed) -> None:
