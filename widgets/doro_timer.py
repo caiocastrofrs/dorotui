@@ -1,12 +1,18 @@
 import subprocess
+from typing import TYPE_CHECKING
 
 from textual.app import ComposeResult
 from textual.containers import CenterMiddle
 from textual.reactive import reactive
 from textual.widgets import Button, Digits
 
+if TYPE_CHECKING:
+    from doro import DorotuiApp
 
 class TimeDisplay(Digits):
+    app: "DorotuiApp"
+
+    current_timer = 'focus'
     time = reactive(0)
 
     def on_mount(self) -> None:
@@ -20,12 +26,8 @@ class TimeDisplay(Digits):
             self.stop()
             self.reset()
             subprocess.run(["paplay","--volume=30000","sounds/alarm-clock-elapsed.oga"])
-            if self.time == self.app.default_time:
-                self.time = self.app.default_rest
-            elif self.time == self.app.default_rest:
-                self.time = self.app.default_time
             self.query_ancestor(DoroTimer).remove_class("started")
-
+            self.toggle_timer()
 
 
     def watch_time(self, time: float) -> None:
@@ -40,7 +42,18 @@ class TimeDisplay(Digits):
         self.update_timer.pause()
 
     def reset(self) -> None:
-        self.time = self.app.default_time
+        if self.current_timer == 'focus':
+            self.time = self.app.default_time
+        elif self.current_timer == 'rest':
+            self.time = self.app.default_rest
+
+    def toggle_timer(self) -> None:
+        if self.current_timer == 'focus':
+            self.current_timer = 'rest'
+            self.time = self.app.default_rest
+        elif self.current_timer == 'rest':
+            self.current_timer = 'focus'
+            self.time = self.app.default_time
 
 class DoroTimer(CenterMiddle):
     def on_button_pressed(self, event: Button.Pressed) -> None:
