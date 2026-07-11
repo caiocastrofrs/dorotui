@@ -8,7 +8,7 @@ CONFIG_DIR = Path(user_config_dir("doro-tui"))
 CONFIG_FILE = CONFIG_DIR / "config.toml"
 
 DEFAULT_CONFIG = {
-    "default_session_time": 25,
+    "default_focus_time": 25,
     "default_rest_time": 5,
     "theme": "textual-dark",
 }
