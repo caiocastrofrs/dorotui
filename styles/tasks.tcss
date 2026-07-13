@@ -1,0 +1,21 @@
+TaskList {
+  width: auto;
+  height: auto;
+  background: $secondary;
+  margin-top: 5;
+}
+
+Task, ListItem {
+  layout: grid;
+  grid-size: 4 1;
+  grid-columns: 15;
+  padding: 1;
+}
+
+.task_name {
+
+}
+
+.task_sessions {
+  dock: right;
+}

@@ -1,0 +1,28 @@
+SettingsScreen {
+  margin: 5;
+  width: 100;
+}
+
+SettingsScreen Label {
+  color: $primary;
+  border: transparent;
+}
+
+SettingsScreen Input:focus {
+  border: tall $secondary; 
+}
+
+SettingsScreen HorizontalGroup {
+  margin-top: 1;
+  margin-right: 1;
+  align: right middle;
+}
+
+SettingsScreen HorizontalGroup #save {
+  background: $primary;
+  margin-right: 1;
+}
+
+SettingsScreen HorizontalGroup #default {
+  background: $secondary;
+}
