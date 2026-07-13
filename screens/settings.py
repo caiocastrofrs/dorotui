@@ -3,18 +3,20 @@ from typing import TYPE_CHECKING
 from textual.app import ComposeResult
 from textual.containers import CenterMiddle, HorizontalGroup
 from textual.screen import Screen
-from textual.widgets import Button, Footer, Header, Input, Label
+from textual.widgets import Button, Footer, Input, Label
 
 from configuration import load_config, save_config
+from widgets.header import CHeader
 
 if TYPE_CHECKING:
     from app import DorotuiApp
 
 class SettingsScreen(Screen):
+    CSS_PATH="../styles/settings.tcss"
     app: "DorotuiApp"
 
     def compose(self) -> ComposeResult:
-        yield Header()
+        yield CHeader()
         with CenterMiddle():
             yield Label("Focus time (in minutes)")
             yield Input(placeholder="25", type="integer", id="focus_time")

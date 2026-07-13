@@ -5,9 +5,10 @@ from textual.app import ComposeResult
 from textual.containers import CenterMiddle
 from textual.reactive import reactive
 from textual.screen import Screen
-from textual.widgets import Button, Digits, Footer, Header
+from textual.widgets import Button, Digits, Footer
 
 from configuration import load_config
+from widgets.header import CHeader
 
 if TYPE_CHECKING:
     from app import DorotuiApp
@@ -72,6 +73,7 @@ class TimeDisplay(Digits):
             self.time = self.app.default_focus_time * 3600
 
 class TimerScreen(Screen):
+    CSS_PATH="../styles/timer.tcss"
     app: "DorotuiApp"
     config = load_config()
     time_display = TimeDisplay()
@@ -96,7 +98,7 @@ class TimerScreen(Screen):
             self.time_display.update_default_time(self.app.default_rest_time)
 
     def compose(self) -> ComposeResult:
-        yield Header()
+        yield CHeader()
         with CenterMiddle():
             yield self.time_display
             yield Button("Start", id="start")
