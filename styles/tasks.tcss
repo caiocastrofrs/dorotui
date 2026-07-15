@@ -12,10 +12,17 @@ Task, ListItem {
   padding: 1;
 }
 
-.task_name {
-
-}
-
 .task_sessions {
   dock: right;
 }
+
+#dialog_create_task {
+  width: 50%;
+}
+#dialog_create_task > Label {
+  margin: 1;
+}
+#button_box > Button {
+  margin: 1;
+}
+
