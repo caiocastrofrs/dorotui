@@ -25,9 +25,9 @@ class TimeDisplay(Digits):
     def on_mount(self) -> None:
         self.time = self.config['default_focus_time'] * 3600
         if self.current_timer == 'focus':
-            self.update_default_time(self.app.default_focus_time)
+            self.update_default_time(self.app.config['default_focus_time'])
         elif self.current_timer == 'rest':
-            self.update_default_time(self.app.default_rest_time)
+            self.update_default_time(self.app.config['default_rest_time'])
         self.update_timer = self.set_interval(1/60, self.update_time, pause=True)
 
     def update_default_time(self, new_time) -> None:
@@ -60,17 +60,17 @@ class TimeDisplay(Digits):
 
     def reset(self) -> None:
         if self.current_timer == 'focus':
-            self.time = self.app.default_focus_time * 3600
+            self.time = self.app.config['default_focus_time'] * 3600
         elif self.current_timer == 'rest':
-            self.time = self.app.default_rest_time * 3600
+            self.time = self.app.config['default_rest_time'] * 3600
 
     def toggle_timer(self) -> None:
         if self.current_timer == 'focus':
             self.current_timer = 'rest'
-            self.time = self.app.default_rest_time * 3600
+            self.time = self.app.config['default_rest_time'] * 3600
         elif self.current_timer == 'rest':
             self.current_timer = 'focus'
-            self.time = self.app.default_focus_time * 3600
+            self.time = self.app.config['default_focus_time'] * 3600
 
 class TimerScreen(Screen):
     CSS_PATH="../styles/timer.tcss"
@@ -93,9 +93,9 @@ class TimerScreen(Screen):
 
     def on_screen_resume(self) -> None:
         if self.time_display.current_timer == 'focus':
-            self.time_display.update_default_time(self.app.default_focus_time)
+            self.time_display.update_default_time(self.app.config['default_focus_time'])
         elif self.time_display.current_timer == 'rest':
-            self.time_display.update_default_time(self.app.default_rest_time)
+            self.time_display.update_default_time(self.app.config['default_rest_time'])
 
     def compose(self) -> ComposeResult:
         yield CHeader()

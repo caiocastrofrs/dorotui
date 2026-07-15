@@ -5,7 +5,7 @@ from textual.containers import CenterMiddle, HorizontalGroup
 from textual.screen import Screen
 from textual.widgets import Button, Footer, Input, Label
 
-from configuration import load_config, save_config
+from configuration import save_config
 from widgets.header import CHeader
 
 if TYPE_CHECKING:
@@ -28,28 +28,21 @@ class SettingsScreen(Screen):
         yield Footer()
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
-        config = load_config()
-
+        new_config = self.app.config
         if event.button.id == "save":
             focus_time = self.query_exactly_one("#focus_time", Input).value
             rest_time = self.query_exactly_one("#rest_time", Input).value
             
             if focus_time:
-                config['default_focus_time'] = int(focus_time)
-                self.app.default_focus_time = int(focus_time)
+                new_config['default_focus_time'] = int(focus_time)
                 self.notify(f'Session time set to {focus_time}')
             if rest_time:
-                config['default_rest_time'] = int(rest_time)
-                self.app.default_rest_time = int(rest_time)
+                new_config['default_rest_time'] = int(rest_time)
                 self.notify(f'Rest time set to {rest_time}')
 
         if event.button.id == "default":
-            config['default_focus_time'] = 25
-            config['default_rest_time'] = 5
-            self.app.default_focus_time = 25
-            self.app.default_rest_time = 5
+            new_config["default_focus_time"] = 25
+            new_config["default_rest_time"] = 5
             self.notify('All settings restored to default.')
 
-        save_config(config)
-
-        
+        save_config(new_config)

@@ -1,7 +1,7 @@
 from textual.app import App
 from textual.reactive import reactive
 
-from configuration import load_config, save_config
+from configuration import DefaultConfigType, load_config, save_config
 from screens.dashboard import DashboardScreen
 from screens.settings import SettingsScreen
 from screens.tasks import TasksScreen
@@ -9,8 +9,6 @@ from screens.timer import TimerScreen
 
 
 class DorotuiApp(App):
-    config = load_config()
-
     CSS_PATH="styles/styles.tcss"
     BINDINGS = [
             ("p", "toggle_dark", "Toggle Dark Mode"),
@@ -27,8 +25,7 @@ class DorotuiApp(App):
         "tasks": TasksScreen
     }
 
-    default_focus_time: reactive[int] = reactive(config['default_focus_time'])
-    default_rest_time: reactive[int] = reactive(config['default_rest_time'])
+    config: reactive[DefaultConfigType] = reactive(load_config(), recompose=True)
 
     def on_mount(self) -> None:
         self.theme = self.config['theme']
