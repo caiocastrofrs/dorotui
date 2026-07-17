@@ -5,7 +5,7 @@ from textual.containers import CenterMiddle, HorizontalGroup
 from textual.screen import Screen
 from textual.widgets import Button, Footer, Input, Label
 
-from configuration import save_config
+from configuration import DEFAULT_CONFIG, save_config
 from widgets.header import CHeader
 
 if TYPE_CHECKING:
@@ -41,8 +41,8 @@ class SettingsScreen(Screen):
                 self.notify(f'Rest time set to {rest_time}')
 
         if event.button.id == "default":
-            new_config["default_focus_time"] = 25
-            new_config["default_rest_time"] = 5
+            new_config["default_focus_time"] = DEFAULT_CONFIG["default_focus_time"]
+            new_config["default_rest_time"] = DEFAULT_CONFIG["default_rest_time"]
             self.notify('All settings restored to default.')
 
         save_config(new_config)
