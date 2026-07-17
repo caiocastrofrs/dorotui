@@ -8,5 +8,5 @@ from widgets.header import CHeader
 class DashboardScreen(Screen):
     def compose(self) -> ComposeResult:
         yield CHeader()
-        yield Label('Dashboard')
+        yield Label("Dashboard")
         yield Footer()
