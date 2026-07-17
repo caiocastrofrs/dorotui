@@ -12,12 +12,6 @@
   background: $secondary-muted;
 }
 
-TimeDisplay {
-  color: $foreground-muted;
-  text-style: bold;
-  width: 19;
-}
-
 .started TimeDisplay {
   color: $foreground;
 }
@@ -29,8 +23,39 @@ TimeDisplay {
 .started #stop {
   display: block;
   background: $primary;
+  width: 100%;
 }
 
 .started #reset {
   display: none;
+}
+
+TimeDisplay {
+  color: $foreground-muted;
+  background: #DB5461;
+  color: white;
+  padding: 1;
+}
+
+.rest {
+  background: #9BC53D;
+  color: white;
+  padding: 1;
+}
+
+TimerScreen > CenterMiddle > Widget {
+  width: 38;
+  text-align: center;
+  text-style: bold;
+}
+
+TimerScreen > CenterMiddle > CurrentTask {
+  padding: 1;
+  background: #34AD6C;
+}
+
+TimerScreen Button {
+  width: 50%;
+  border: none;
+  padding: 1;
 }

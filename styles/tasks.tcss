@@ -1,16 +1,17 @@
 TaskList {
-  width: auto;
+  width: 100;
   height: auto;
   background: $secondary;
   margin-top: 5;
 }
 
-Task, ListItem {
+Task {
   layout: grid;
   grid-size: 4 1;
   grid-columns: 15;
   padding: 1;
 }
+
 
 .task_sessions {
   dock: right;
@@ -26,3 +27,6 @@ Task, ListItem {
   margin: 1;
 }
 
+#task_name_label {
+  column-span: 4;
+}
