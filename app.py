@@ -9,35 +9,38 @@ from screens.timer import TimerScreen
 
 
 class DorotuiApp(App):
-    CSS_PATH="styles/styles.tcss"
+    CSS_PATH = "styles/styles.tcss"
     BINDINGS = [
-            ("p", "toggle_dark", "Toggle Dark Mode"),
-            ("d", "switch_mode('dashboard')", "Dashboard"),
-            ("t", "switch_mode('timer')", "Timer"),
-            ("r", "switch_mode('tasks')", "Tasks"),
-            ("s", "switch_mode('settings')", "Settings"),
-            ]
+        ("p", "toggle_dark", "Toggle Dark Mode"),
+        ("d", "switch_mode('dashboard')", "Dashboard"),
+        ("t", "switch_mode('timer')", "Timer"),
+        ("r", "switch_mode('tasks')", "Tasks"),
+        ("s", "switch_mode('settings')", "Settings"),
+    ]
 
     MODES = {
         "dashboard": DashboardScreen,
         "settings": SettingsScreen,
         "timer": TimerScreen,
-        "tasks": TasksScreen
+        "tasks": TasksScreen,
     }
 
     config: reactive[DefaultConfigType] = reactive(load_config(), recompose=True)
 
     def on_mount(self) -> None:
-        self.theme = self.config['theme']
-        self.switch_mode('timer')
+        self.theme = self.config["theme"]
+        self.switch_mode("timer")
 
     def action_toggle_dark(self) -> None:
-        self.theme = ("textual-dark" if self.theme == "textual-light" else "textual-light")
+        self.theme = (
+            "textual-dark" if self.theme == "textual-light" else "textual-light"
+        )
 
     def watch_theme(self) -> None:
-        if not self.theme == self.config['theme']:
-            self.config['theme'] = self.theme
+        if not self.theme == self.config["theme"]:
+            self.config["theme"] = self.theme
             save_config(self.config)
+
 
 if __name__ == "__main__":
     app = DorotuiApp()
