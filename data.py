@@ -42,8 +42,11 @@ def erase_all_data() -> None:
 def delete_one_task(task_id: str) -> list[TaskType] | None:
     try:
         sessions = load_sessions()
-        task_to_delete = next(item for item in sessions if item["id"] == task_id)
-        sessions.remove(task_to_delete)
+        for index, session in enumerate(sessions):
+            if session['id'] == task_id:
+                sessions.pop(index)
+                break
+
         with open(DATA_FILE, "w") as f:
             json.dump(sessions, f, indent=2)
         return sessions
