@@ -94,3 +94,6 @@ class TimerScreen(Screen):
                 yield Button("Stop", id="stop")
                 yield Button("Reset", id="reset")
         yield Footer()
+    def on_mount(self) -> None:
+        self.title = "󱎫 Timer"
+

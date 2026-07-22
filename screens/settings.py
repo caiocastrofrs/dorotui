@@ -16,6 +16,9 @@ class SettingsScreen(Screen):
     CSS_PATH = "../styles/settings.tcss"
     app: "DorotuiApp"
 
+    def on_mount(self) -> None:
+        self.title = " Settings"
+
     def compose(self) -> ComposeResult:
         yield CHeader()
         with CenterMiddle():
