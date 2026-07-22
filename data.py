@@ -14,19 +14,17 @@ class TaskType(TypedDict):
     completed_sessions: int
     total_sessions: int
 
+
 def load_sessions() -> list[TaskType]:
     if not DATA_FILE.exists():
         return []
     with open(DATA_FILE, "r") as f:
         return json.load(f)
 
-def save_session(session: TaskType) -> list[TaskType] | None:
+
+def save_sessions(sessions_list: list[TaskType]) -> None:
     try:
-        DATA_DIR.mkdir(parents=True, exist_ok=True)
-        sessions = load_sessions()
-        sessions.append(session)
         with open(DATA_FILE, "w") as f:
-            json.dump(sessions, f, indent=2)
-        return sessions
+            json.dump(sessions_list, f, indent=2)
     except Exception as e:
         print(e)
