@@ -2,6 +2,7 @@ from textual.app import App
 from textual.reactive import reactive
 
 from configuration import DefaultConfigType, load_config, save_config
+from data import TaskType, load_sessions, save_sessions
 from screens.dashboard import DashboardScreen
 from screens.settings import SettingsScreen
 from screens.tasks import TasksScreen
@@ -25,7 +26,8 @@ class DorotuiApp(App):
         "tasks": TasksScreen,
     }
 
-    config: reactive[DefaultConfigType] = reactive(load_config(), recompose=True)
+    config: reactive[DefaultConfigType] = reactive(load_config())
+    saved_data: reactive[list[TaskType]] = reactive(load_sessions(), always_update=True)
 
     def on_mount(self) -> None:
         self.theme = self.config["theme"]
@@ -38,6 +40,25 @@ class DorotuiApp(App):
 
     def watch_theme(self) -> None:
         if not self.theme == self.config["theme"]:
+    def get_current_task(self) -> TaskType | None:
+        for task in self.saved_data:
+            if task["id"] == self.config["current_task_id"]:
+                return task
+
+    def remove_one_task(self, task_id_to_remove) -> TaskType | None:
+        updated_data = self.saved_data.copy()
+        for task in self.saved_data:
+            if task["id"] == task_id_to_remove:
+                updated_data.remove(task)
+                self.saved_data = updated_data
+                break
+
+    def watch_config(self, new_config: DefaultConfigType):
+        save_config(new_config)
+
+    def watch_saved_data(self, new_data: list[TaskType]):
+        save_sessions(new_data)
+
             self.config["theme"] = self.theme
             save_config(self.config)
 
