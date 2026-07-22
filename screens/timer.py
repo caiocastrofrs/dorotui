@@ -24,12 +24,25 @@ class TimeDisplay(Digits):
 
     def update_time(self) -> None:
         if self.time > 0:
-            self.time -= 500
+            self.time -= 1
         else:
             self.stop()
             subprocess.run(
                 ["paplay", "--volume=30000", "sounds/alarm-clock-elapsed.oga"]
             )
+            if self.current_timer == "focus":
+                updated_data = self.app.saved_data.copy()
+                current_task = self.app.get_current_task()
+                if current_task:
+                    index = updated_data.index(current_task)
+                    updated_data[index] = {
+                        **updated_data[index],
+                        "completed_sessions": updated_data[index]["completed_sessions"]
+                        + 1,
+                    }
+                    self.app.saved_data = updated_data
+                    self.screen.query_one(CurrentTask).update_content()
+
             self.toggle_timer()
             self.query_ancestor(TimerScreen).remove_class("started")
 
@@ -38,8 +51,15 @@ class TimeDisplay(Digits):
         minutes, seconds = divmod(seconds, 60)
         self.update(f"{minutes:02,.0f}:{seconds:02.0f}")
 
-    def start(self) -> None:
-        self.update_timer.resume()
+    def start(self) -> bool:
+        task = self.app.get_current_task()
+        if task:
+            if task["completed_sessions"] == task["total_sessions"]:
+                self.notify("Current task already reached maximum sessions.")
+            else:
+                self.update_timer.resume()
+                return True
+        return False
 
     def stop(self) -> None:
         self.update_timer.pause()
@@ -58,7 +78,19 @@ class TimeDisplay(Digits):
 
 
 class CurrentTask(Label):
-    pass
+    app: "DorotuiApp"
+
+    def on_mount(self) -> None:
+        self.update_content()
+
+    def update_content(self) -> None:
+        current_task = self.app.get_current_task()
+        if current_task:
+            self.update(
+                f"{current_task['id']}\n{current_task['name']}\n{current_task['completed_sessions']}/{current_task['total_sessions']}"
+            )
+        else:
+            self.update("No task selected")
 
 
 class TimerScreen(Screen):
@@ -66,12 +98,15 @@ class TimerScreen(Screen):
     app: "DorotuiApp"
     time_display = TimeDisplay()
 
+    def on_mount(self) -> None:
+        self.title = "󱎫 Timer"
+
     def on_button_pressed(self, event: Button.Pressed) -> None:
         button_id = event.button.id
 
         if button_id == "start":
-            self.time_display.start()
-            self.add_class("started")
+            if self.time_display.start():
+                self.add_class("started")
         elif button_id == "stop":
             self.time_display.stop()
             self.remove_class("started")
@@ -80,9 +115,7 @@ class TimerScreen(Screen):
 
     def on_screen_resume(self) -> None:
         self.time_display.reset()
-        task_name = self.app.config["current_task"]["name"]
-        task_id = self.app.config["current_task"]["id"]
-        self.query_exactly_one(CurrentTask).update(f"{task_id}\n{task_name}")
+        self.query_one(CurrentTask).update_content()
 
     def compose(self) -> ComposeResult:
         yield CHeader()
@@ -94,9 +127,3 @@ class TimerScreen(Screen):
                 yield Button("Stop", id="stop")
                 yield Button("Reset", id="reset")
         yield Footer()
-    def on_mount(self) -> None:
-        self.title = "󱎫 Timer"
-
-    def on_mount(self) -> None:
-        self.title = "󱎫 Timer"
-
