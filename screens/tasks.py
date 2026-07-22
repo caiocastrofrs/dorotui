@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     from app import DorotuiApp
 
 
-class CreateTaskScreen(ModalScreen[TaskType]):
+class CreateTaskModal(ModalScreen[TaskType]):
     def compose(self) -> ComposeResult:
         with CenterMiddle():
             yield VerticalGroup(
@@ -118,7 +118,7 @@ class TaskList(ListView):
                 )
                 save_session(new_task_dict)
 
-        self.app.push_screen(CreateTaskScreen(), handle_new_task)
+        self.app.push_screen(CreateTaskModal(), handle_new_task)
 
 
 class TasksScreen(Screen):
