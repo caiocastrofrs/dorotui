@@ -43,9 +43,3 @@ def save_config(config: DefaultConfigType) -> DefaultConfigType:
     with open(CONFIG_FILE, "wb") as f:
         tomli_w.dump(config, f)
     return config
-
-
-def restore_default() -> DefaultConfigType:
-    with open(CONFIG_FILE, "wb") as f:
-        tomli_w.dump(DEFAULT_CONFIG, f)
-    return DEFAULT_CONFIG
