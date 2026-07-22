@@ -49,12 +49,12 @@ class CreateTaskModal(ModalScreen[TaskType]):
                 self.dismiss(task)
             elif not total_sessions:
                 self.notify("1 is the minimum allowed value", severity="warning")
-        else:
-            self.app.pop_screen()
             else:
                 self.notify("Fill the required inputs", severity="warning")
 
 
+        else:
+            self.app.pop_screen()
 class Task(ListItem):
     def __init__(self, task_id: str, task_name: str, total_sessions: int):
         super().__init__()
