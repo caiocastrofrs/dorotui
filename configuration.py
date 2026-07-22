@@ -9,23 +9,18 @@ CONFIG_DIR = Path(user_config_dir("doro-tui"))
 CONFIG_FILE = CONFIG_DIR / "config.toml"
 
 
-class CurrentTask(TypedDict):
-    name: str
-    id: str
-
-
 class DefaultConfigType(TypedDict):
     default_focus_time: int
     default_rest_time: int
     theme: str
-    current_task: CurrentTask
+    current_task_id: str
 
 
 DEFAULT_CONFIG: DefaultConfigType = {
     "default_focus_time": 25,
     "default_rest_time": 5,
     "theme": "textual-dark",
-    "current_task": {"name": "", "id": ""},
+    "current_task_id": "",
 }
 
 
