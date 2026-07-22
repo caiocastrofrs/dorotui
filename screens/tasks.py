@@ -47,12 +47,12 @@ class CreateTaskModal(ModalScreen[TaskType]):
                 }
 
                 self.dismiss(task)
-            else:
-                self.notify("Fill the required inputs", severity="warning")
             elif not total_sessions:
                 self.notify("1 is the minimum allowed value", severity="warning")
         else:
             self.app.pop_screen()
+            else:
+                self.notify("Fill the required inputs", severity="warning")
 
 
 class Task(ListItem):
