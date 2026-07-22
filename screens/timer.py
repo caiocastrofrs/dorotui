@@ -97,3 +97,6 @@ class TimerScreen(Screen):
     def on_mount(self) -> None:
         self.title = "󱎫 Timer"
 
+    def on_mount(self) -> None:
+        self.title = "󱎫 Timer"
+
