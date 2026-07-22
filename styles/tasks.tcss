@@ -30,3 +30,7 @@ Task {
 #task_name_label {
   column-span: 4;
 }
+
+.current_task {
+  background: #677DB7;
+}
