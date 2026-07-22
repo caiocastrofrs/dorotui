@@ -38,8 +38,6 @@ class DorotuiApp(App):
             "textual-dark" if self.theme == "textual-light" else "textual-light"
         )
 
-    def watch_theme(self) -> None:
-        if not self.theme == self.config["theme"]:
     def get_current_task(self) -> TaskType | None:
         for task in self.saved_data:
             if task["id"] == self.config["current_task_id"]:
@@ -59,6 +57,8 @@ class DorotuiApp(App):
     def watch_saved_data(self, new_data: list[TaskType]):
         save_sessions(new_data)
 
+    def watch_theme(self) -> None:
+        if not self.theme == self.config["theme"]:
             self.config["theme"] = self.theme
             save_config(self.config)
 
