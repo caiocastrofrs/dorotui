@@ -27,7 +27,7 @@ class DorotuiApp(App):
     }
 
     config: reactive[DefaultConfigType] = reactive(load_config())
-    saved_data: reactive[list[TaskType]] = reactive(load_sessions(), always_update=True)
+    saved_data: reactive[list[TaskType]] = reactive(load_sessions())
 
     def on_mount(self) -> None:
         self.theme = self.config["theme"]
@@ -42,6 +42,7 @@ class DorotuiApp(App):
         for task in self.saved_data:
             if task["id"] == self.config["current_task_id"]:
                 return task
+        return None
 
     def remove_one_task(self, task_id_to_remove) -> TaskType | None:
         updated_data = self.saved_data.copy()

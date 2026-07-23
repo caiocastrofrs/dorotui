@@ -54,13 +54,13 @@ class CreateTaskModal(ModalScreen[TaskType]):
             else:
                 self.notify("Fill the required inputs", severity="warning")
         else:
-            self.app.pop_screen()
+            self.dismiss(None)
 
 
 class Task(ListItem):
     app: "DorotuiApp"
 
-    completed_sessions: reactive[int] = reactive(0, recompose=True)
+    completed_sessions: reactive[int] = reactive(0)
 
     def __init__(
         self, task_id: str, task_name: str, total_sessions: int, completed_sessions: int
@@ -76,11 +76,19 @@ class Task(ListItem):
             self.add_class("current_task")
 
     def watch_completed_sessions(self) -> None:
-        updated_data = self.app.saved_data.copy()
-        for index, task in enumerate(updated_data):
-            if task["id"] == self.task_id:
-                updated_data[index]["completed_sessions"] = self.completed_sessions
-        self.app.saved_data = updated_data
+        if self.is_mounted:
+            self.query_one(".task_sessions", Label).update(
+                f"󱎫 {self.completed_sessions} completed of 󱎫 {self.total_sessions}"
+            )
+
+            updated_data = self.app.saved_data.copy()
+            for index, task in enumerate(updated_data):
+                if task["id"] == self.task_id:
+                    updated_data[index] = {
+                        **updated_data[index],
+                        "completed_sessions": self.completed_sessions,
+                    }
+            self.app.saved_data = updated_data
 
     def compose(self) -> ComposeResult:
         yield Label(str(self.task_id))
@@ -134,7 +142,7 @@ class TaskList(ListView):
 
     def toggle_current_task_class(self, selected: ListView.Selected) -> None:
         for item in self.children:
-            if not item.id != selected.item.id:
+            if item.task_id != selected.item.task_id:
                 item.remove_class("current_task")
         selected.item.add_class("current_task")
 
@@ -158,17 +166,18 @@ class TaskList(ListView):
         else:
             selected_task.completed_sessions -= 1
 
-    def action_erase_all_tasks(self) -> None:
-        self.clear()
+    async def action_erase_all_tasks(self) -> None:
+        await self.clear()
         self.app.saved_data = []
         self.app.config["current_task_id"] = ""
 
-    def action_delete_one_task(self) -> None:
+    async def action_delete_one_task(self) -> None:
         selected_task = cast(Task, self.highlighted_child)
         if selected_task:
             for index, list_item in enumerate(self.children):
                 if list_item == selected_task:
-                    self.pop(index)
+                    await self.pop(index)
+                    break
 
             self.app.remove_one_task(selected_task.task_id)
             self.notify(f"task {selected_task.task_id} was deleted")

@@ -24,7 +24,7 @@ class TimeDisplay(Digits):
 
     def update_time(self) -> None:
         if self.time > 0:
-            self.time -= 1
+            self.time -= 500
         else:
             self.stop()
             subprocess.run(
@@ -54,7 +54,10 @@ class TimeDisplay(Digits):
     def start(self) -> bool:
         task = self.app.get_current_task()
         if task:
-            if task["completed_sessions"] == task["total_sessions"]:
+            if (
+                task["completed_sessions"] == task["total_sessions"]
+                and self.current_timer != "rest"
+            ):
                 self.notify("Current task already reached maximum sessions.")
             else:
                 self.update_timer.resume()
@@ -96,7 +99,6 @@ class CurrentTask(Label):
 class TimerScreen(Screen):
     CSS_PATH = "../styles/timer.tcss"
     app: "DorotuiApp"
-    time_display = TimeDisplay()
 
     def on_mount(self) -> None:
         self.title = "󱎫 Timer"
@@ -105,23 +107,23 @@ class TimerScreen(Screen):
         button_id = event.button.id
 
         if button_id == "start":
-            if self.time_display.start():
+            if self.query_one(TimeDisplay).start():
                 self.add_class("started")
         elif button_id == "stop":
-            self.time_display.stop()
+            self.query_one(TimeDisplay).stop()
             self.remove_class("started")
         elif button_id == "reset":
-            self.time_display.reset()
+            self.query_one(TimeDisplay).reset()
 
     def on_screen_resume(self) -> None:
-        self.time_display.reset()
+        self.query_one(TimeDisplay).reset()
         self.query_one(CurrentTask).update_content()
 
     def compose(self) -> ComposeResult:
         yield CHeader()
         with CenterMiddle():
             yield CurrentTask()
-            yield self.time_display
+            yield TimeDisplay()
             with HorizontalGroup():
                 yield Button("Start", id="start")
                 yield Button("Stop", id="stop")
