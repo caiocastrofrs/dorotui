@@ -1,11 +1,11 @@
+import tomllib
 from pathlib import Path
 from typing import TypedDict, cast
 
 import tomli_w
-import tomllib
 from platformdirs import user_config_dir
 
-CONFIG_DIR = Path(user_config_dir("doro-tui"))
+CONFIG_DIR = Path(user_config_dir("doro-tui", appauthor=False))
 CONFIG_FILE = CONFIG_DIR / "config.toml"
 
 

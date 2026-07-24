@@ -64,6 +64,10 @@ class DorotuiApp(App):
             save_config(self.config)
 
 
-if __name__ == "__main__":
+def main() -> None:
     app = DorotuiApp()
     app.run()
+
+
+if __name__ == "__main__":
+    main()

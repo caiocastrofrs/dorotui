@@ -1,4 +1,5 @@
 import subprocess
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 from textual.app import ComposeResult
@@ -11,6 +12,9 @@ from widgets.header import CHeader
 
 if TYPE_CHECKING:
     from app import DorotuiApp
+
+PACKAGE_DIR = Path(__file__).parent.parent
+SOUND_FILE = PACKAGE_DIR / "sounds" / "alarm-clock-elapsed.oga"
 
 
 class TimeDisplay(Digits):
@@ -27,9 +31,7 @@ class TimeDisplay(Digits):
             self.time -= 500
         else:
             self.stop()
-            subprocess.run(
-                ["paplay", "--volume=30000", "sounds/alarm-clock-elapsed.oga"]
-            )
+            subprocess.run(["paplay", "--volume=30000", SOUND_FILE])
             if self.current_timer == "focus":
                 updated_data = self.app.saved_data.copy()
                 current_task = self.app.get_current_task()

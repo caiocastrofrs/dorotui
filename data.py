@@ -4,7 +4,7 @@ from typing import TypedDict
 
 from platformdirs import user_data_dir
 
-DATA_DIR = Path(user_data_dir("doro-tui"))
+DATA_DIR = Path(user_data_dir("doro-tui", appauthor=False))
 DATA_FILE = DATA_DIR / "tasks.json"
 
 

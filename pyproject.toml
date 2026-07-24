@@ -1,0 +1,26 @@
+[project]
+name = "doro-tui"
+version = "1.0.0"
+description = "A TUI Pomodoro app"
+requires-python = ">=3.11"
+dependencies = [
+    "textual>=8.0",
+    "platformdirs",
+    "tomli-w",
+]
+
+[project.scripts]
+dorotui = "app:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build]
+include = [
+    "*.py",
+    "screens/*.py",
+    "widgets/*.py",
+    "styles/*.tcss",
+    "sounds/*.oga",
+]
