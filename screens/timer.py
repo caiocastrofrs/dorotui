@@ -28,7 +28,7 @@ class TimeDisplay(Digits):
 
     def update_time(self) -> None:
         if self.time > 0:
-            self.time -= 500
+            self.time -= 1
         else:
             self.stop()
             subprocess.run(["paplay", "--volume=30000", SOUND_FILE])
