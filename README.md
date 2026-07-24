@@ -18,8 +18,8 @@ Decidi desenvolver esse aplicativo porque uso a técnica Pomodoro para tudo, ach
 Pré-requisitos: Python 3.11+ e [pipx](https://pipx.pypa.io/)
 
 ```bash
-git clone https://github.com/caiocastrofrs/doro-tui.git
-cd doro-tui
+git clone https://github.com/caiocastrofrs/dorotui.git
+cd dorotui
 pipx install .
 ```
 
