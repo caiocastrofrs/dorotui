@@ -185,7 +185,9 @@ class TaskList(ListView):
     def action_create_task(self):
         def handle_new_task(new_task: TaskType | None) -> None:
             if new_task:
-                self.app.saved_data.append({**new_task, "completed_sessions": 0})
+                updated_data = self.app.saved_data.copy()
+                updated_data.append(new_task)
+                self.app.saved_data = updated_data
 
         self.app.push_screen(CreateTaskModal(), handle_new_task)
 
